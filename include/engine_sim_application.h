@@ -161,9 +161,9 @@ class EngineSimApplication {
         // ysVector m_green;
         // ysVector m_blue;
 
-        ysAudioBuffer *m_outputAudioBuffer;
-        AudioBuffer m_audioBuffer;
-        ysAudioSource *m_audioSource;
+        // ysAudioBuffer *m_outputAudioBuffer;
+        // AudioBuffer m_audioBuffer;
+        // ysAudioSource *m_audioSource;
 
         int m_oscillatorSampleOffset;
         int m_screen;

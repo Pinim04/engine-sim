@@ -22,8 +22,8 @@ EngineSimApplication::EngineSimApplication() {
     m_paused = false;
     m_recording = false;
 
-    m_outputAudioBuffer = nullptr;
-    m_audioSource = nullptr;
+    // m_outputAudioBuffer = nullptr;
+    // m_audioSource = nullptr;
 
     m_torque = 0;
     m_dynoSpeed = 0;
@@ -118,22 +118,22 @@ void EngineSimApplication::initialize() {
 
     loadScript();
 
-    m_audioBuffer.initialize(44100, 44100);
-    m_audioBuffer.m_writePointer = (int)(44100 * 0.1);
+    // m_audioBuffer.initialize(44100, 44100);
+    // m_audioBuffer.m_writePointer = (int)(44100 * 0.1);
 
-    ysAudioParameters params;
-    params.m_bitsPerSample = 16;
-    params.m_channelCount = 1;
-    params.m_sampleRate = 44100;
-    m_outputAudioBuffer =
-        m_engine.GetAudioDevice()->CreateBuffer(&params, 44100);
+    // ysAudioParameters params;
+    // params.m_bitsPerSample = 16;
+    // params.m_channelCount = 1;
+    // params.m_sampleRate = 44100;
+    // m_outputAudioBuffer =
+    //     m_engine.GetAudioDevice()->CreateBuffer(&params, 44100);
 
-    m_audioSource = m_engine.GetAudioDevice()->CreateSource(m_outputAudioBuffer);
-    m_audioSource->SetMode((m_simulator->getEngine() != nullptr)
-        ? ysAudioSource::Mode::Loop
-        : ysAudioSource::Mode::Stop);
-    m_audioSource->SetPan(0.0f);
-    m_audioSource->SetVolume(1.0f);
+    // m_audioSource = m_engine.GetAudioDevice()->CreateSource(m_outputAudioBuffer);
+    // m_audioSource->SetMode((m_simulator->getEngine() != nullptr)
+    //     ? ysAudioSource::Mode::Loop
+    //     : ysAudioSource::Mode::Stop);
+    // m_audioSource->SetPan(0.0f);
+    // m_audioSource->SetVolume(1.0f);
 
 #ifdef ATG_ENGINE_SIM_DISCORD_ENABLED
     // Create a global instance of discord-rpc
@@ -204,60 +204,60 @@ void EngineSimApplication::process(float frame_dt) {
     //         (duration.count() / 1E9) / iterationCount);
     // }
 
-    const SampleOffset safeWritePosition = m_audioSource->GetCurrentWritePosition();
-    const SampleOffset writePosition = m_audioBuffer.m_writePointer;
+    // const SampleOffset safeWritePosition = m_audioSource->GetCurrentWritePosition();
+    // const SampleOffset writePosition = m_audioBuffer.m_writePointer;
 
-    SampleOffset targetWritePosition =
-        m_audioBuffer.getBufferIndex(safeWritePosition, (int)(44100 * 0.1));
-    SampleOffset maxWrite = m_audioBuffer.offsetDelta(writePosition, targetWritePosition);
+    // SampleOffset targetWritePosition =
+    //     m_audioBuffer.getBufferIndex(safeWritePosition, (int)(44100 * 0.1));
+    // SampleOffset maxWrite = m_audioBuffer.offsetDelta(writePosition, targetWritePosition);
 
-    SampleOffset currentLead = m_audioBuffer.offsetDelta(safeWritePosition, writePosition);
-    SampleOffset newLead = m_audioBuffer.offsetDelta(safeWritePosition, targetWritePosition);
+    // SampleOffset currentLead = m_audioBuffer.offsetDelta(safeWritePosition, writePosition);
+    // SampleOffset newLead = m_audioBuffer.offsetDelta(safeWritePosition, targetWritePosition);
 
-    if (currentLead > 44100 * 0.5) {
-        m_audioBuffer.m_writePointer = m_audioBuffer.getBufferIndex(safeWritePosition, (int)(44100 * 0.05));
-        currentLead = m_audioBuffer.offsetDelta(safeWritePosition, m_audioBuffer.m_writePointer);
-        maxWrite = m_audioBuffer.offsetDelta(m_audioBuffer.m_writePointer, targetWritePosition);
-    }
+    // if (currentLead > 44100 * 0.5) {
+    //     m_audioBuffer.m_writePointer = m_audioBuffer.getBufferIndex(safeWritePosition, (int)(44100 * 0.05));
+    //     currentLead = m_audioBuffer.offsetDelta(safeWritePosition, m_audioBuffer.m_writePointer);
+    //     maxWrite = m_audioBuffer.offsetDelta(m_audioBuffer.m_writePointer, targetWritePosition);
+    // }
 
-    if (currentLead > newLead) {
-        maxWrite = 0;
-    }
+    // if (currentLead > newLead) {
+    //     maxWrite = 0;
+    // }
 
-    int16_t *samples = new int16_t[maxWrite];
-    const int readSamples = m_simulator->readAudioOutput(maxWrite, samples);
+    // int16_t *samples = new int16_t[maxWrite];
+    // const int readSamples = m_simulator->readAudioOutput(maxWrite, samples);
 
-    for (SampleOffset i = 0; i < (SampleOffset)readSamples && i < maxWrite; ++i) {
-        const int16_t sample = samples[i];
-        if (m_oscillatorSampleOffset % 4 == 0) {
-            m_oscCluster->getAudioWaveformOscilloscope()->addDataPoint(
-                m_oscillatorSampleOffset,
-                sample / (float)(INT16_MAX));
-        }
+    // for (SampleOffset i = 0; i < (SampleOffset)readSamples && i < maxWrite; ++i) {
+    //     const int16_t sample = samples[i];
+    //     if (m_oscillatorSampleOffset % 4 == 0) {
+    //         m_oscCluster->getAudioWaveformOscilloscope()->addDataPoint(
+    //             m_oscillatorSampleOffset,
+    //             sample / (float)(INT16_MAX));
+    //     }
 
-        m_audioBuffer.writeSample(sample, m_audioBuffer.m_writePointer, (int)i);
+    //     m_audioBuffer.writeSample(sample, m_audioBuffer.m_writePointer, (int)i);
 
-        m_oscillatorSampleOffset = (m_oscillatorSampleOffset + 1) % (44100 / 10);
-    }
+    //     m_oscillatorSampleOffset = (m_oscillatorSampleOffset + 1) % (44100 / 10);
+    // }
 
-    delete[] samples;
+    // delete[] samples;
 
-    if (readSamples > 0) {
-        SampleOffset size0, size1;
-        void *data0, *data1;
-        m_audioSource->LockBufferSegment(
-            m_audioBuffer.m_writePointer, readSamples, &data0, &size0, &data1, &size1);
+    // if (readSamples > 0) {
+    //     SampleOffset size0, size1;
+    //     void *data0, *data1;
+    //     m_audioSource->LockBufferSegment(
+    //         m_audioBuffer.m_writePointer, readSamples, &data0, &size0, &data1, &size1);
 
-        m_audioBuffer.copyBuffer(
-            reinterpret_cast<int16_t *>(data0), m_audioBuffer.m_writePointer, size0);
-        m_audioBuffer.copyBuffer(
-            reinterpret_cast<int16_t *>(data1),
-            m_audioBuffer.getBufferIndex(m_audioBuffer.m_writePointer, size0),
-            size1);
+    //     m_audioBuffer.copyBuffer(
+    //         reinterpret_cast<int16_t *>(data0), m_audioBuffer.m_writePointer, size0);
+    //     m_audioBuffer.copyBuffer(
+    //         reinterpret_cast<int16_t *>(data1),
+    //         m_audioBuffer.getBufferIndex(m_audioBuffer.m_writePointer, size0),
+    //         size1);
 
-        m_audioSource->UnlockBufferSegments(data0, size0, data1, size1);
-        m_audioBuffer.commitBlock(readSamples);
-    }
+    //     m_audioSource->UnlockBufferSegments(data0, size0, data1, size1);
+    //     m_audioBuffer.commitBlock(readSamples);
+    // }
 
     // m_performanceCluster->addInputBufferUsageSample(
     //     (double)m_simulator->getSynthesizerInputLatency() / m_simulator->getSynthesizerInputLatencyTarget());
@@ -382,7 +382,7 @@ void EngineSimApplication::destroy() {
     // m_engine.Destroy();
 
     m_simulator->destroy();
-    m_audioBuffer.destroy();
+    // m_audioBuffer.destroy();
 }
 
 void EngineSimApplication::loadEngine(
@@ -437,24 +437,24 @@ void EngineSimApplication::loadEngine(
     audioParams.dF_F_mix = static_cast<float>(engine->getInitialHighFrequencyGain());
     m_simulator->synthesizer().setAudioParameters(audioParams);
 
-    for (int i = 0; i < engine->getExhaustSystemCount(); ++i) {
-        ImpulseResponse *response = engine->getExhaustSystem(i)->getImpulseResponse();
+    // for (int i = 0; i < engine->getExhaustSystemCount(); ++i) {
+    //     ImpulseResponse *response = engine->getExhaustSystem(i)->getImpulseResponse();
 
-        ysWindowsAudioWaveFile waveFile;
-        waveFile.OpenFile(response->getFilename().c_str());
-        waveFile.InitializeInternalBuffer(waveFile.GetSampleCount());
-        waveFile.FillBuffer(0);
-        waveFile.CloseFile();
+    //     ysWindowsAudioWaveFile waveFile;
+    //     waveFile.OpenFile(response->getFilename().c_str());
+    //     waveFile.InitializeInternalBuffer(waveFile.GetSampleCount());
+    //     waveFile.FillBuffer(0);
+    //     waveFile.CloseFile();
 
-        m_simulator->synthesizer().initializeImpulseResponse(
-            reinterpret_cast<const int16_t *>(waveFile.GetBuffer()),
-            waveFile.GetSampleCount(),
-            response->getVolume(),
-            i
-        );
+    //     m_simulator->synthesizer().initializeImpulseResponse(
+    //         reinterpret_cast<const int16_t *>(waveFile.GetBuffer()),
+    //         waveFile.GetSampleCount(),
+    //         response->getVolume(),
+    //         i
+    //     );
 
-        waveFile.DestroyInternalBuffer();
-    }
+    //     waveFile.DestroyInternalBuffer();
+    // }
 
     m_simulator->startAudioRenderingThread();
 }
@@ -871,12 +871,12 @@ void EngineSimApplication::processEngineInput() {
 
     m_targetClutchPressure = clamp(m_targetClutchPressure);
 
-    // double clutchRC = 0.001;
+    double clutchRC = 0.001;
     // if (m_engine.IsKeyDown(ysKey::Code::Space)) {
     //     clutchRC = 1.0;
     // }
 
-    // const double clutch_s = dt / (dt + clutchRC);
+    const double clutch_s = dt / (dt + clutchRC);
     m_clutchPressure = m_clutchPressure * (1 - clutch_s) + m_targetClutchPressure * clutch_s;
     m_simulator->getTransmission()->setClutchPressure(m_clutchPressure);
 }
