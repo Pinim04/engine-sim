@@ -33,7 +33,7 @@ class CombustionChamber : public atg_scs::ForceGenerator {
             double lastVolume = 0.0;
             double travel_x = 0.0;
             double travel_y = 0.0;
-            GasSystem::Mix globalMix;
+            GasMix globalMix;
         };
 
         struct FrictionModelParams {

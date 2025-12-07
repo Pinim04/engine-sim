@@ -280,7 +280,7 @@ TEST(GasSystemTests, IdealGasLaw) {
 }
 
 TEST(GasSystemTests, CompositionSanityCheck) {
-    GasSystem::Mix a, b;
+    GasMix a, b;
     a.p_fuel = 1.0;
     a.p_inert = 1.0;
     a.p_o2 = 1.0;

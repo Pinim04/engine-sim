@@ -58,7 +58,7 @@ void ExhaustSystem::destroy() {
 }
 
 void ExhaustSystem::process(double dt) {
-    GasSystem::Mix airMix;
+    GasMix airMix;
     airMix.p_fuel = 0;
     airMix.p_inert = 1.0;
     airMix.p_o2 = 0.0;

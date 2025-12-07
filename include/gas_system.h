@@ -7,21 +7,21 @@
 #include <cfloat>
 #include <cmath>
 
-class GasSystem {
-    public:
-        struct Mix {
+struct GasMix {
             double p_fuel = 0.0;
             double p_inert = 1.0;
             double p_o2 = 0.0;
         };
 
+class GasSystem {
+    public:
         struct State {
             double n_mol = 0.0;
             double E_k = 0.0;
             double V = 0.0;
             double momentum[2] = { 0.0, 0.0 };
 
-            Mix mix;
+            GasMix mix;
         };
 
         struct FlowParameters {
@@ -37,8 +37,8 @@ class GasSystem {
         ~GasSystem() { /* void */ }
 
         void setGeometry(double width, double height, double dx, double dy);
-        void initialize(double P, double V, double T, const Mix &mix = {}, int degreesOfFreedom = 5);
-        void reset(double P, double T, const Mix &mix = {});
+        void initialize(double P, double V, double T, const GasMix &mix = {}, int degreesOfFreedom = 5);
+        void reset(double P, double T, const GasMix &mix = {});
 
         void setVolume(double V);
         void setN(double n);
@@ -48,10 +48,10 @@ class GasSystem {
         void changeTemperature(double dT);
         void changeTemperature(double dT, double n);
         void changeEnergy(double dE);
-        void changeMix(const Mix &mix);
+        void changeMix(const GasMix &mix);
         void injectFuel(double n);
 
-        double react(double n, const Mix &mix);
+        double react(double n, const GasMix &mix);
         static double flowConstant(double flowRate, double P, double pressureDrop, double T, double hcr);
         static double k_28inH2O(double flowRateScfm);
         static double k_carb(double flowRateScfm);
@@ -65,14 +65,14 @@ class GasSystem {
             double chokedFlowLimit,
             double chokedFlowRateCached);
         double loseN(double dn, double E_k_per_mol);
-        double gainN(double dn, double E_k_per_mol, const Mix &mix = {});
+        double gainN(double dn, double E_k_per_mol, const GasMix &mix = {});
         void dissipateExcessVelocity();
 
         void updateVelocity(double dt, double beta = 1.0);
         void dissipateVelocity(double dt, double timeConstant);
 
         static double flow(const FlowParameters &params);
-        double flow(double k_flow, double dt, double P_env, double T_env, const Mix &mix = {});
+        double flow(double k_flow, double dt, double P_env, double T_env, const GasMix &mix = {});
 
         double pressureEquilibriumMaxFlow(const GasSystem *b) const;
         double pressureEquilibriumMaxFlow(double P_env, double T_env) const;
@@ -104,7 +104,7 @@ class GasSystem {
         inline double n_inert() const;
         inline double n_o2() const;
         inline double heatCapacityRatio() const;
-        inline Mix mix() const { return m_state.mix; }
+        inline GasMix mix() const { return m_state.mix; }
 
     protected:
         State m_state;
