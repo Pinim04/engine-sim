@@ -1,7 +1,7 @@
 #ifndef ATG_ENGINE_SIM_CHANNEL_TYPES_H
 #define ATG_ENGINE_SIM_CHANNEL_TYPES_H
 
-#include "piranha.h"
+#include <piranha/include/piranha.h>
 
 namespace es_script {
 
@@ -27,16 +27,20 @@ namespace es_script {
         static const piranha::ChannelType ThrottleChannel;
     };
 
+    template <typename T>
+    struct always_false : std::false_type {};
+
     template <typename Type>
-    extern inline const piranha::ChannelType *LookupChannelType() {
-        static_assert(false, "Invalid type lookup");
+    inline const piranha::ChannelType *LookupChannelType() {
+        static_assert(always_false<Type>::value, "Invalid type lookup");
         return nullptr;
     }
 
-#define ASSIGN_CHANNEL_TYPE(type, channel) \
-    class type; \
-    template <> extern inline const piranha::ChannelType *LookupChannelType<type>() { \
-        return &ObjectChannel::channel; \
+#define ASSIGN_CHANNEL_TYPE(TypeName, channel)                          \
+    class TypeName;                                                     \
+    template <>                                                         \
+    inline const piranha::ChannelType *es_script::LookupChannelType<TypeName>() {  \
+        return &ObjectChannel::channel;                                 \
     }
 
     // Register all types

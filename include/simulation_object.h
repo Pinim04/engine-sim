@@ -2,7 +2,7 @@
 #define ATG_ENGINE_SIM_SIMULATION_OBJECT_H
 
 #include "scs.h"
-#include "delta.h"
+// #include "delta.h"
 
 class Piston;
 class CylinderBank;
@@ -36,7 +36,7 @@ class SimulationObject {
             float ly = 0.0f,
             float theta = 0.0f,
             float z = 0.0f);
-        ysVector tintByLayer(const ysVector &col, int layers) const;
+        // ysVector tintByLayer(const ysVector &col, int layers) const;
 
         EngineSimApplication *m_app;
 };

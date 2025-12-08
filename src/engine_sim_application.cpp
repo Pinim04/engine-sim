@@ -36,13 +36,17 @@ EngineSimApplication::EngineSimApplication() {
     // m_loadSimulationCluster = nullptr;
     // m_mixerCluster = nullptr;
     // m_infoCluster = nullptr;
-    // m_iceEngine = nullptr;
     // m_mainRenderTarget = nullptr;
+    m_iceEngine = nullptr;
+    m_started = false;
 
     m_vehicle = nullptr;
     m_transmission = nullptr;
 
     m_oscillatorSampleOffset = 0;
+}
+
+EngineSimApplication::~EngineSimApplication() {
 }
 
 // void EngineSimApplication::initialize(void *instance, ysContextObject::DeviceAPI api) {
@@ -193,6 +197,7 @@ void EngineSimApplication::process(float frame_dt) {
         ;
         continue;
     }
+    std::cout << "RPM: " << units::toRpm(m_simulator->getEngine()->getRpm()) << std::endl;
 
     auto proc_t1 = std::chrono::steady_clock::now();
 
@@ -374,7 +379,7 @@ void EngineSimApplication::run() {
     //     stopRecording();
     // }
 
-    m_simulator->endAudioRenderingThread();
+    // m_simulator->endAudioRenderingThread();
 }
 
 void EngineSimApplication::destroy() {
@@ -456,7 +461,7 @@ void EngineSimApplication::loadEngine(
     //     waveFile.DestroyInternalBuffer();
     // }
 
-    m_simulator->startAudioRenderingThread();
+    // m_simulator->startAudioRenderingThread();
 }
 
 // void EngineSimApplication::drawGenerated(
@@ -816,7 +821,14 @@ void EngineSimApplication::processEngineInput() {
     // }
 
     // TO HANDLE
-    m_simulator->m_starterMotor.m_enabled = true;
+\
+    if (!m_started) {
+        m_simulator->m_starterMotor.m_enabled = true;
+        if (units::toRpm(m_simulator->getEngine()->getRpm()) > 300.0) 
+            m_started=true;
+    } else {
+        m_simulator->m_starterMotor.m_enabled = false;
+    }
 
 
     // if (prevStarterEnabled != m_simulator->m_starterMotor.m_enabled) {
@@ -835,7 +847,7 @@ void EngineSimApplication::processEngineInput() {
     //         : "IGNITION DISABLED";
     //     m_infoCluster->setLogMessage(msg);
     // }
-    m_simulator->getEngine()->getIgnitionModule()->m_enabled = true;
+    m_simulator->getEngine()->getIgnitionModule()->m_enabled = false;
 
     // if (m_engine.ProcessKeyDown(ysKey::Code::Up)) {
     //     m_simulator->getTransmission()->changeGear(m_simulator->getTransmission()->getGear() + 1);

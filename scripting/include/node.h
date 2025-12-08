@@ -1,7 +1,7 @@
 #ifndef ATG_ENGINE_SIM_NODE_H
 #define ATG_ENGINE_SIM_NODE_H
 
-#include "piranha.h"
+#include <piranha/include/piranha.h>
 
 #include <map>
 #include <string>

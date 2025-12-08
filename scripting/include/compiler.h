@@ -1,10 +1,10 @@
 #ifndef ATG_ENGINE_SIM_COMPILER_H
 #define ATG_ENGINE_SIM_COMPILER_H
 
-#include "language_rules.h"
+#include <piranha/include/piranha.h>
 
+#include "language_rules.h"
 #include "engine_sim.h"
-#include "piranha.h"
 
 #include <vector>
 

@@ -76,9 +76,9 @@ class EngineSimApplication {
     protected:
         void loadScript();
         void processEngineInput();
-        void renderScene();
+        // void renderScene();
 
-        void refreshUserInterface();
+        // void refreshUserInterface();
 
     protected:
         double m_speedSetting = 1.0;
@@ -90,13 +90,13 @@ class EngineSimApplication {
 
     protected:
         virtual void process(float dt);
-        virtual void render();
+        // virtual void render();
 
-        float m_displayAngle;
-        float m_displayHeight;
-        int m_gameWindowHeight;
-        int m_screenWidth;
-        int m_screenHeight;
+        // float m_displayAngle;
+        // float m_displayHeight;
+        // int m_gameWindowHeight;
+        // int m_screenWidth;
+        // int m_screenHeight;
         
         ApplicationSettings m_applicationSettings;
         // dbasic::ShaderSet m_shaderSet;
@@ -121,6 +121,8 @@ class EngineSimApplication {
         Simulator *m_simulator;
         double m_dynoSpeed;
         double m_torque;
+
+        bool m_started;
 
         // UiManager m_uiManager;
         // EngineView *m_engineView;

@@ -1,7 +1,7 @@
 #ifndef ATG_ENGINE_SIM_LANGUAGE_RULES_H
 #define ATG_ENGINE_SIM_LANGUAGE_RULES_H
 
-#include "piranha.h"
+#include <piranha/include/language_rules.h>
 
 namespace es_script {
 

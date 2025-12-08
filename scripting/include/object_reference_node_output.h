@@ -1,11 +1,15 @@
 #ifndef ATG_ENGINE_SIM_OBJECT_REFERENCE_NODE_OUTPUT_H
 #define ATG_ENGINE_SIM_OBJECT_REFERENCE_NODE_OUTPUT_H
 
-#include "piranha.h"
+#include <piranha/include/piranha.h>
 
 #include "channel_types.h"
 
 namespace es_script {
+
+    // Forward declare the template
+    template <typename Type>
+    const piranha::ChannelType* LookupChannelType();
 
     template <typename Type>
     class ObjectReferenceNodeOutput : public piranha::NodeOutput {
@@ -34,6 +38,6 @@ namespace es_script {
         return static_cast<ObjectReferenceNodeOutput<Type> *>(input)->getReference();
     }
 
-} /* namespace manta */
+} /* namespace es_script */
 
 #endif /* ATG_ENGINE_SIM_OBJECT_REFERENCE_NODE_OUTPUT_H */

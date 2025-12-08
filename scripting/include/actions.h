@@ -1,7 +1,7 @@
 #ifndef ATG_ENGINE_SIM_ACTIONS_H
 #define ATG_ENGINE_SIM_ACTIONS_H
 
-#include "piranha.h"
+#include <piranha/include/piranha.h>
 
 #include "compiler.h"
 #include "object_reference_node.h"

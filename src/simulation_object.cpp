@@ -52,10 +52,10 @@ Piston *SimulationObject::getForemostPiston(CylinderBank *bank, int layer) {
     return frontmostPiston;
 }
 
-void SimulationObject::resetShader() {
-    m_app->getShaders()->ResetBaseColor();
-    m_app->getShaders()->SetObjectTransform(ysMath::LoadIdentity());
-}
+// void SimulationObject::resetShader() {
+//     m_app->getShaders()->ResetBaseColor();
+//     m_app->getShaders()->SetObjectTransform(ysMath::LoadIdentity());
+// }
 
 void SimulationObject::setTransform(
     atg_scs::RigidBody *rigidBody,

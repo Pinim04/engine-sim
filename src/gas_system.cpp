@@ -13,7 +13,7 @@ void GasSystem::setGeometry(double width, double height, double dx, double dy) {
     m_dy = dy;
 }
 
-void GasSystem::initialize(double P, double V, double T, const Mix &mix, int degreesOfFreedom) {
+void GasSystem::initialize(double P, double V, double T, const GasMix &mix, int degreesOfFreedom) {
     m_degreesOfFreedom = degreesOfFreedom;
     m_state.n_mol = P * V / (constants::R * T);
     m_state.V = V;
@@ -26,7 +26,7 @@ void GasSystem::initialize(double P, double V, double T, const Mix &mix, int deg
     m_chokedFlowFactorCached = chokedFlowRate(degreesOfFreedom);
 }
 
-void GasSystem::reset(double P, double T, const Mix &mix) {
+void GasSystem::reset(double P, double T, const GasMix &mix) {
     m_state.n_mol = P * volume() / (constants::R * T);
     m_state.E_k = T * (0.5 * m_degreesOfFreedom * m_state.n_mol * constants::R);
     m_state.mix = mix;
@@ -65,7 +65,7 @@ void GasSystem::changeEnergy(double dE) {
     m_state.E_k += dE;
 }
 
-void GasSystem::changeMix(const Mix &mix) {
+void GasSystem::changeMix(const GasMix &mix) {
     m_state.mix = mix;
 }
 
@@ -79,7 +79,7 @@ void GasSystem::changeTemperature(double dT, double n) {
     m_state.E_k += dT * 0.5 * m_degreesOfFreedom * n * constants::R;
 }
 
-double GasSystem::react(double n, const Mix &mix) {
+double GasSystem::react(double n, const GasMix &mix) {
     const double l_n_fuel = mix.p_fuel * n;
     const double l_n_o2 = mix.p_o2 * n;
 
@@ -239,7 +239,7 @@ double GasSystem::loseN(double dn, double E_k_per_mol) {
     return dn;
 }
 
-double GasSystem::gainN(double dn, double E_k_per_mol, const Mix &mix) {
+double GasSystem::gainN(double dn, double E_k_per_mol, const GasMix &mix) {
     const double next_n = m_state.n_mol + dn;
     const double current_n = m_state.n_mol;
 
@@ -519,7 +519,7 @@ double GasSystem::flow(const FlowParameters &params) {
     return flow * direction;
 }
 
-double GasSystem::flow(double k_flow, double dt, double P_env, double T_env, const Mix &mix) {
+double GasSystem::flow(double k_flow, double dt, double P_env, double T_env, const GasMix &mix) {
     const double maxFlow = pressureEquilibriumMaxFlow(P_env, T_env);
     double flow = dt * flowRate(
         k_flow,
